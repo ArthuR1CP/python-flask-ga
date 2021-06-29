@@ -59,12 +59,12 @@ jobs:
       with:
         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        aws-region: eu-west-1
+        aws-region: eu-west-3
 
     # Create the Elastic Beanstalk application
     - name: Create EBS application
       run: |
-        eb init -p python-3.6 hw_app --region eu-west-1
+        eb init -p python-3.6 hw_app --region eu-west-3
     # Create the Elastic Beanstalk environment
     - name: Create test environment
       run: |
