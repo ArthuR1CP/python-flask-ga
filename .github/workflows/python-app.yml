@@ -70,5 +70,5 @@ jobs:
         else
           echo "Environment does not exist, creating..."
           eb init -p python-3.8 eb-app --region eu-west-3  # Initialize the project
-          eb create test-environment --cname test-env-art --timeout 15
+          eb create test-environment --cname test-env-art2 --timeout 15
         fi
