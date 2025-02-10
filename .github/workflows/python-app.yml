@@ -51,16 +51,6 @@ jobs:
         pip install --upgrade awsebcli
         eb --version
 
-    # # Elastic Beanstalk CLI version
-    # - name: Install AWS CLI & EB CLI
-    #   run: |
-    #     sudo apt-get update && sudo apt-get install -y awscli
-    #     pip install awsebcli --upgrade
-    #     aws --version
-    #     eb --version
-
-
-
     # AWS Credentials
     - name: Configure AWS Credentials
       uses: aws-actions/configure-aws-credentials@v1
@@ -72,9 +62,12 @@ jobs:
     # Create the Elastic Beanstalk application
     - name: Deploy to AWS Elastic Beanstalk
       run: |
-        eb init -p python-3.8 hw_app --region eu-west-3
-        if eb status test-environment; then
+        if eb list | grep -q "test-environment"; then
+          echo "Environment exists, deploying..."
+          eb use test-environment
+          eb status test-environment
           eb deploy
         else
-          eb create test-environment
+          echo "Environment does not exist, creating..."
+          eb create test-environment --cname test-env --timeout 15
         fi
