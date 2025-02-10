@@ -1,1 +1,1 @@
-web: PYTHONPATH=src gunicorn -b 0.0.0.0:800 application:application
+web: PYTHONPATH=src gunicorn -b 0.0.0.0:8000 application:application
