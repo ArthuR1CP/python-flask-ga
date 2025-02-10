@@ -1,7 +1,4 @@
-# This workflow will install Python dependencies, run tests and lint with a single version of Python
-# For more information see: https://help.github.com/actions/language-and-framework-guides/using-python-with-github-actions
-
-name: Python application
+name: CI/CD - Python App
 
 on:
   push:
@@ -16,15 +13,14 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - name: Set up Python 3.6
+    - name: Set up Python 3.8
       uses: actions/setup-python@v2
       with:
-        python-version: 3.6
+        python-version: 3.8
           # Set up cache for pip
     - name: Get pip cache dir
       id: pip-cache
-      run: |
-        echo "::set-output name=dir::$(pip cache dir)"
+      run: echo "dir=$(pip cache dir)" >> $GITHUB_ENV
 
     - name: Cache pip
       uses: actions/cache@v1
@@ -47,10 +43,11 @@ jobs:
 
 
     # Elastic Beanstalk CLI version
-    - name: Get EB CLI version
+    - name: Install AWS CLI & EB CLI
       run: |
-        python -m pip install --upgrade pip
+        sudo apt-get update && sudo apt-get install -y awscli
         pip install awsebcli --upgrade
+        aws --version
         eb --version
 
     # AWS Credentials
@@ -62,10 +59,11 @@ jobs:
         aws-region: eu-west-3
 
     # Create the Elastic Beanstalk application
-    - name: Create EBS application
+    - name: Deploy to AWS Elastic Beanstalk
       run: |
-        eb init -p python-3.6 hw_app --region eu-west-3
-    # Create the Elastic Beanstalk environment
-    - name: Create test environment
-      run: |
-        (eb use test-environment && eb status test-environment && eb deploy) || eb create test-environment
+        eb init -p python-3.8 hw_app --region eu-west-3
+        if eb status test-environment; then
+          eb deploy
+        else
+          eb create test-environment
+        fi
