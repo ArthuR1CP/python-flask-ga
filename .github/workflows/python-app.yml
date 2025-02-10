@@ -61,7 +61,7 @@ jobs:
     
 
     - name: Initialize Elastic Beanstalk
-      run: eb init -p python-3.8 eb-app --region eu-west-3 --profile default
+      run: eb init -p python-3.8 eb-app --region eu-west-3 
 
     - name: Check if Environment Exists
       id: check_env
