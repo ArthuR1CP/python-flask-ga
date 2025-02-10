@@ -15,17 +15,23 @@ def captured_templates(application):
     finally:
         template_rendered.disconnect(record, application)
 
-class TestIndex(unittest.TestCase):
+class Tests(unittest.TestCase):
+
+    def test_health_endpoint(self):
+        with application.test_client() as c:
+            r = c.get('/health')
+            self.assertTrue(b'UP' in r.data)
+
     def test_index(self):
         with application.test_client() as c:
             with captured_templates(application) as templates:
-
                 r = c.get('/')
                 template, context = templates[0]
 
                 #print(template)
                 self.assertEqual(re.findall(r'index.html', str(template))[0], 'index.html')
                 self.assertEqual(context['greeting'], 'Artur')
+
     def test_rcode(self):
         with application.test_client() as c:
             r = c.get('/')
@@ -33,5 +39,5 @@ class TestIndex(unittest.TestCase):
 
 
 
-
-unittest.main()
+if __name__ == '__main__':
+    unittest.main()

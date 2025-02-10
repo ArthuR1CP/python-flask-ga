@@ -1,14 +1,21 @@
 from flask import Flask
 from flask import render_template
-import os
+from flask import jsonify
+
 
 application = Flask(__name__)
 
 @application.route("/")
-def hello():
-    #print(os.getcwd())
+def index():
+    """index route"""
     return render_template("index.html",greeting="Artur")
     #return "Hello World! v1.1"
+
+@application.route("/health")
+def health():
+    """health route"""
+    state = {"status": "UP"}
+    return jsonify(state)
 
 # run the app.
 if __name__ == "__main__":
