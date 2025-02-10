@@ -69,5 +69,5 @@ jobs:
           eb deploy
         else
           echo "Environment does not exist, creating..."
-          eb create test-environment --cname test-env --timeout 15
+          eb create test-environment --cname test-env-art --timeout 15
         fi
