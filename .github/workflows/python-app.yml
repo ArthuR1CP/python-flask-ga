@@ -58,17 +58,28 @@ jobs:
         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: eu-west-3
+    
 
-    # Create the Elastic Beanstalk application
-    - name: Deploy to AWS Elastic Beanstalk
+    - name: Initialize Elastic Beanstalk
+      run: eb init -p python-3.8 eb-app --region eu-west-3 --profile default
+
+    - name: Check if Environment Exists
+      id: check_env
       run: |
-        if eb list eb-app | grep -q "test-environment"; then
+        if eb status test-environment; then
+          echo "exists=true" >> $GITHUB_ENV
+        else
+          echo "exists=false" >> $GITHUB_ENV
+        fi
+
+    - name: Deploy or Create Environment
+      run: |
+        if [ "$exists" = "true" ]; then
           echo "Environment exists, deploying..."
           eb use test-environment
           eb status test-environment
           eb deploy
         else
           echo "Environment does not exist, creating..."
-          eb init -p python-3.8 eb-app --region eu-west-3  # Initialize the project
           eb create test-environment --cname test-env-art2 --timeout 15
         fi
