@@ -43,10 +43,10 @@ jobs:
     # Install AWS CLI v2 & EB
     - name: Install AWS CLI v2
       run: |
-        # Update AWS CLI v2 if already installed
+        # Check if AWS CLI is installed
         if aws --version > /dev/null 2>&1; then
-          echo "AWS CLI already installed. Updating..."
-          sudo ./aws/install --update
+          echo "AWS CLI is already installed. Upgrading..."
+          sudo apt-get update && sudo apt-get install --only-upgrade awscli
         else
           echo "Installing AWS CLI v2..."
           curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
