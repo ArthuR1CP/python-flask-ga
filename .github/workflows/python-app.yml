@@ -62,7 +62,7 @@ jobs:
     # Create the Elastic Beanstalk application
     - name: Deploy to AWS Elastic Beanstalk
       run: |
-        if eb list | grep -q "test-environment"; then
+        if eb list eb-app | grep -q "test-environment"; then
           echo "Environment exists, deploying..."
           eb use test-environment
           eb status test-environment
