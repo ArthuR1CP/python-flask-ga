@@ -6,12 +6,12 @@ function w3_open() {
   x.style.display = "block";
 }
 function w3_close() {
-  document.getElementById("mySidebar").style.display = "none";
+  document.getElementById("testSidebar").style.display = "none";
 }
 var mybtn = document.getElementsByClassName("testbtn")[0];
 mybtn.click();
 function move() {
-  var elem = document.getElementById("myBar");
+  var elem = document.getElementById("testBar");
   var width = 5;
   var id = setInterval(frame, 10);
   function frame() {
