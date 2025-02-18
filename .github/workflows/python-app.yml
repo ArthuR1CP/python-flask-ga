@@ -61,12 +61,12 @@ jobs:
     
 
     - name: Initialize Elastic Beanstalk
-      run: eb init -p python-3.9 eb-app --region eu-west-3 
+      run: eb init -p python-3.9 art-app --region eu-west-3 
 
     - name: Check if Environment Exists
       id: check_env
       run: |
-        if eb status art-environment; then
+        if eb status art-environment-test; then
           echo "exists=true" >> $GITHUB_ENV
         else
           echo "exists=false" >> $GITHUB_ENV
@@ -76,10 +76,10 @@ jobs:
       run: |
         if [ "$exists" = "true" ]; then
           echo "Environment exists, deploying..."
-          eb use art-environment
-          eb status art-environment
+          eb use art-environment-test
+          eb status art-environment-test
           eb deploy
         else
           echo "Environment does not exist, creating..."
-          eb create art-environment --cname env-art2 --timeout 15
+          eb create art-environment-test --cname artart1 --timeout 15
         fi
