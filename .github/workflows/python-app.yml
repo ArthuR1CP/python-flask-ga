@@ -66,7 +66,7 @@ jobs:
     - name: Check if Environment Exists
       id: check_env
       run: |
-        if eb status test-environment; then
+        if eb status art-environment; then
           echo "exists=true" >> $GITHUB_ENV
         else
           echo "exists=false" >> $GITHUB_ENV
@@ -76,10 +76,10 @@ jobs:
       run: |
         if [ "$exists" = "true" ]; then
           echo "Environment exists, deploying..."
-          eb use test-environment
-          eb status test-environment
+          eb use art-environment
+          eb status art-environment
           eb deploy
         else
           echo "Environment does not exist, creating..."
-          eb create test-environment --cname test-env-art2 --timeout 15
+          eb create art-environment --cname env-art2 --timeout 15
         fi
